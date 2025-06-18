@@ -1,171 +1,803 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Term 3 Math Quiz</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #eef3f7;
-      margin: 0;
-      padding: 0;
-    }
-    .container {
-      max-width: 800px;
-      margin: 40px auto;
-      background: white;
-      padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    }
-    h1, h2 {
-      text-align: center;
-    }
-    .question {
-      margin-bottom: 20px;
-    }
-    .navigation {
-      text-align: center;
-      margin-top: 20px;
-    }
-    button {
-      padding: 10px 20px;
-      border: none;
-      border-radius: 5px;
-      background-color: #007bff;
-      color: white;
-      cursor: pointer;
-      margin: 5px;
-    }
-    button:hover {
-      background-color: #0056b3;
-    }
-    .result {
-      font-weight: bold;
-      text-align: center;
-      font-size: 18px;
-      margin-top: 20px;
-    }
-    .correct {
-      background-color: #d4edda;
-      border-left: 5px solid #28a745;
-      padding: 5px;
-    }
-    .incorrect {
-      background-color: #f8d7da;
-      border-left: 5px solid #dc3545;
-      padding: 5px;
-    }
-    .correct::before {
-      content: "✔ ";
-      color: green;
-    }
-    .incorrect::before {
-      content: "✘ ";
-      color: red;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grade 6 Math EOT 3 Quiz</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #ff6b6b, #feca57);
+            padding: 30px;
+            text-align: center;
+            color: white;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .progress-container {
+            background: #f8f9fa;
+            padding: 20px;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: #e9ecef;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #56ccf2, #2f80ed);
+            width: 0%;
+            border-radius: 5px;
+            transition: width 0.3s ease;
+        }
+
+        .progress-text {
+            text-align: center;
+            margin-top: 10px;
+            font-weight: bold;
+            color: #495057;
+        }
+
+        .page {
+            padding: 30px;
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        .page-title {
+            font-size: 1.8rem;
+            color: #495057;
+            margin-bottom: 30px;
+            text-align: center;
+            padding: 15px;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            border-radius: 10px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+
+        .question {
+            background: #fff;
+            border: 2px solid #e9ecef;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+
+        .question:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .question h3 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+            line-height: 1.4;
+        }
+
+        .options {
+            display: grid;
+            gap: 12px;
+        }
+
+        .option {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            background: #f8f9fa;
+            border: 2px solid transparent;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .option:hover {
+            background: #e3f2fd;
+            border-color: #2196f3;
+        }
+
+        .option input[type="radio"] {
+            margin-right: 12px;
+            transform: scale(1.2);
+            accent-color: #2196f3;
+        }
+
+        .option.correct {
+            background: #d4edda;
+            border-color: #28a745;
+            color: #155724;
+        }
+
+        .option.incorrect {
+            background: #f8d7da;
+            border-color: #dc3545;
+            color: #721c24;
+        }
+
+        .feedback {
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: bold;
+            display: none;
+        }
+
+        .feedback.correct {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .feedback.incorrect {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 30px;
+            background: #f8f9fa;
+            border-top: 1px solid #e9ecef;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .final-message {
+            text-align: center;
+            padding: 40px;
+            background: linear-gradient(135deg, #ff6b6b, #feca57);
+            color: white;
+            display: none;
+        }
+
+        .final-message.show {
+            display: block;
+        }
+
+        .final-message h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .final-message p {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+        }
+
+        .final-message .heart {
+            font-size: 2rem;
+            animation: heartbeat 1.5s ease-in-out infinite;
+        }
+
+        @keyframes heartbeat {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .score-display {
+            background: white;
+            color: #333;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .emoji {
+            font-size: 1.5rem;
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Term 3 Math Quiz</h1>
-    <form id="quizForm"></form>
-    <div class="navigation">
-      <button type="button" onclick="prevPage()">Previous</button>
-      <button type="button" onclick="nextPage()">Next</button>
-      <button type="button" onclick="submitQuiz()">Submit</button>
+    <div class="container">
+        <div class="header">
+            <h1>📚 Grade 6 Math EOT 3 Quiz</h1>
+            <p>Test your knowledge on Areas, Surface Area & Volume, Data Collection & Measures of Center</p>
+        </div>
+
+        <div class="progress-container">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div class="progress-text" id="progressText">Question 1 of 20</div>
+        </div>
+
+        <!-- Page 1: Questions 1-10 -->
+        <div class="page active" id="page1">
+            <div class="page-title">📐 PAGE 1: Questions 1-10</div>
+            
+            <div class="question" data-question="1" data-correct="B">
+                <h3>1. What is the formula to find the area of a triangle?</h3>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q1" value="A"> A) base × height
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q1" value="B"> B) ½ × base × height
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q1" value="C"> C) base + height
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q1" value="D"> D) side × side
+                    </label>
+                </div>
+                <div class="feedback"></div>
+            </div>
+
+            <div class="question" data-question="2" data-correct="A">
+                <h3>2. Find the area of a triangle with base 10 cm and height 6 cm.</h3>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q2" value="A"> A) 30 cm²
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q2" value="B"> B) 16 cm²
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q2" value="C"> C) 60 cm²
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q2" value="D"> D) 120 cm²
+                    </label>
+                </div>
+                <div class="feedback"></div>
+            </div>
+
+            <div class="question" data-question="3" data-correct="C">
+                <h3>3. Which quadrilateral has only one pair of parallel sides?</h3>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q3" value="A"> A) Square
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q3" value="B"> B) Rectangle
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q3" value="C"> C) Trapezoid
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q3" value="D"> D) Parallelogram
+                    </label>
+                </div>
+                <div class="feedback"></div>
+            </div>
+
+            <div class="question" data-question="4" data-correct="C">
+                <h3>4. Find the area of a rhombus with diagonals 12 cm and 8 cm.</h3>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q4" value="A"> A) 96 cm²
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q4" value="B"> B) 20 cm²
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q4" value="C"> C) 48 cm²
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q4" value="D"> D) 60 cm²
+                    </label>
+                </div>
+                <div class="feedback"></div>
+            </div>
+
+            <div class="question" data-question="5" data-correct="B">
+                <h3>5. The surface area of a cube is calculated using:</h3>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q5" value="A"> A) 2 × l × w
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q5" value="B"> B) 6 × side²
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q5" value="C"> C) π × r²
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q5" value="D"> D) length × width
+                    </label>
+                </div>
+                <div class="feedback"></div>
+            </div>
+
+            <div class="question" data-question="6" data-correct="B">
+                <h3>6. If the side of a cube is 5 cm, what's the surface area?</h3>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q6" value="A"> A) 25 cm²
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q6" value="B"> B) 150 cm²
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q6" value="C"> C) 125 cm²
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q6" value="D"> D) 75 cm²
+                    </label>
+                </div>
+                <div class="feedback"></div>
+            </div>
+
+            <div class="question" data-question="7" data-correct="B">
+                <h3>7. Volume of a rectangular prism is found by:</h3>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q7" value="A"> A) l + w + h
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q7" value="B"> B) l × w × h
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q7" value="C"> C) ½ × l × w
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q7" value="D"> D) 6 × side²
+                    </label>
+                </div>
+                <div class="feedback"></div>
+            </div>
+
+            <div class="question" data-question="8" data-correct="B">
+                <h3>8. What is the volume of a prism with l=4, w=3, h=5?</h3>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q8" value="A"> A) 12 cm³
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q8" value="B"> B) 60 cm³
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q8" value="C"> C) 20 cm³
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q8" value="D"> D) 45 cm³
+                    </label>
+                </div>
+                <div class="feedback"></div>
+            </div>
+
+            <div class="question" data-question="9" data-correct="C">
+                <h3>9. Which shape has a curved surface area?</h3>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q9" value="A"> A) Cube
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q9" value="B"> B) Pyramid
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q9" value="C"> C) Cylinder
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q9" value="D"> D) Rectangular prism
+                    </label>
+                </div>
+                <div class="feedback"></div>
+            </div>
+
+            <div class="question" data-question="10" data-correct="B">
+                <h3>10. What's the unit for surface area?</h3>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q10" value="A"> A) cm
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q10" value="B"> B) cm²
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q10" value="C"> C) cm³
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q10" value="D"> D) m
+                    </label>
+                </div>
+                <div class="feedback"></div>
+            </div>
+        </div>
+
+        <!-- Page 2: Questions 11-20 -->
+        <div class="page" id="page2">
+            <div class="page-title">📊 PAGE 2: Questions 11-20</div>
+            
+            <div class="question" data-question="11" data-correct="A">
+                <h3>11. What's the mean of these numbers: 3, 7, 8, 10?</h3>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q11" value="A"> A) 7
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q11" value="B"> B) 10
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q11" value="C"> C) 8
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q11" value="D"> D) 6
+                    </label>
+                </div>
+                <div class="feedback"></div>
+            </div>
+
+            <div class="question" data-question="12" data-correct="A">
+                <h3>12. Find the median of: 9, 2, 5, 4, 8</h3>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q12" value="A"> A) 5
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q12" value="B"> B) 6
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q12" value="C"> C) 4
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q12" value="D"> D) 8
+                    </label>
+                </div>
+                <div class="feedback"></div>
+            </div>
+
+            <div class="question" data-question="13" data-correct="C">
+                <h3>13. What's the mode of: 1, 2, 2, 3, 4, 4, 4?</h3>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q13" value="A"> A) 2
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q13" value="B"> B) 3
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q13" value="C"> C) 4
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q13" value="D"> D) 1
+                    </label>
+                </div>
+                <div class="feedback"></div>
+            </div>
+
+            <div class="question" data-question="14" data-correct="C">
+                <h3>14. Which of these is NOT a data display?</h3>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q14" value="A"> A) Line plot
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q14" value="B"> B) Bar graph
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q14" value="C"> C) Equation
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q14" value="D"> D) Pie chart
+                    </label>
+                </div>
+                <div class="feedback"></div>
+            </div>
+
+            <div class="question" data-question="15" data-correct="B">
+                <h3>15. What is an outlier in a data set?</h3>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q15" value="A"> A) The highest number
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q15" value="B"> B) A number far from the rest
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q15" value="C"> C) The average
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q15" value="D"> D) The number that appears most
+                    </label>
+                </div>
+                <div class="feedback"></div>
+            </div>
+
+            <div class="question" data-question="16" data-correct="B">
+                <h3>16. Which measure of center is affected most by outliers?</h3>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q16" value="A"> A) Median
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q16" value="B"> B) Mean
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q16" value="C"> C) Mode
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q16" value="D"> D) Range
+                    </label>
+                </div>
+                <div class="feedback"></div>
+            </div>
+
+            <div class="question" data-question="17" data-correct="B">
+                <h3>17. What is the range of: 2, 4, 6, 8, 10?</h3>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q17" value="A"> A) 10
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q17" value="B"> B) 8
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q17" value="C"> C) 6
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q17" value="D"> D) 12
+                    </label>
+                </div>
+                <div class="feedback"></div>
+            </div>
+
+            <div class="question" data-question="18" data-correct="B">
+                <h3>18. A data set has two modes. It is:</h3>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q18" value="A"> A) Modal
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q18" value="B"> B) Bimodal
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q18" value="C"> C) Non-modal
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q18" value="D"> D) Normal
+                    </label>
+                </div>
+                <div class="feedback"></div>
+            </div>
+
+            <div class="question" data-question="19" data-correct="C">
+                <h3>19. Which graph is best for showing parts of a whole?</h3>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q19" value="A"> A) Bar graph
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q19" value="B"> B) Line plot
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q19" value="C"> C) Pie chart
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q19" value="D"> D) Histogram
+                    </label>
+                </div>
+                <div class="feedback"></div>
+            </div>
+
+            <div class="question" data-question="20" data-correct="B">
+                <h3>20. What type of chart shows frequency of data in intervals?</h3>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q20" value="A"> A) Pie chart
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q20" value="B"> B) Histogram
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q20" value="C"> C) Line graph
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q20" value="D"> D) Box plot
+                    </label>
+                </div>
+                <div class="feedback"></div>
+            </div>
+        </div>
+
+        <div class="navigation">
+            <button class="btn btn-secondary" id="prevBtn" onclick="previousPage()" style="display: none;">← Previous</button>
+            <div></div>
+            <button class="btn btn-primary" id="nextBtn" onclick="nextPage()">Next Page →</button>
+            <button class="btn btn-primary" id="finishBtn" onclick="finishQuiz()" style="display: none;">Finish Quiz 🎉</button>
+        </div>
+
+        <div class="final-message" id="finalMessage">
+            <h2>🎉 Congratulations! 🎉</h2>
+            <div class="score-display" id="scoreDisplay"></div>
+            <p><span class="emoji">📜</span> <strong>Good luck on your math final lil sis</strong> <span class="heart">💖</span></p>
+            <p>You're gonna crush it!</p>
+        </div>
     </div>
-    <div id="result" class="result"></div>
-  </div>
 
-  <script>
-    const questions = [
-  { question: "What is the mean of 12, 15, 11, 10, and 17?", options: ["13", "12", "14", "15"], answer: "13" },
-  { question: "What is the median of the set: 3, 8, 5, 9, 2?", options: ["5", "3", "8", "6"], answer: "5" },
-  { question: "Which of the following is a statistical question?", options: ["What is your favorite color?", "What time is it now?", "How tall is the Burj Khalifa?", "How many books did students read last month?"], answer: "How many books did students read last month?" },
-  { question: "What is the volume of a cube with side length 4 cm?", options: ["64 cm³", "16 cm³", "24 cm³", "8 cm³"], answer: "64 cm³" },
-  { question: "Which shape has a net that includes 2 circles and a rectangle?", options: ["Cylinder", "Cone", "Cube", "Pyramid"], answer: "Cylinder" },
-  { question: "Find the area of a triangle with base 10 cm and height 6 cm.", options: ["30 cm²", "60 cm²", "15 cm²", "20 cm²"], answer: "30 cm²" },
-  { question: "Which of these is categorical data?", options: ["Eye color", "Height in cm", "Weight in kg", "Age"], answer: "Eye color" },
-  { question: "What is the mode of the numbers: 2, 3, 2, 5, 2, 6?", options: ["2", "3", "5", "6"], answer: "2" },
-  { question: "What is the surface area of a cube with 3 cm sides?", options: ["54 cm²", "27 cm²", "36 cm²", "18 cm²"], answer: "54 cm²" },
-  { question: "How many faces does a rectangular prism have?", options: ["6", "8", "10", "4"], answer: "6" },
-  { question: "What is the mean of: 100, 110, 120?", options: ["110", "100", "115", "120"], answer: "110" },
-  { question: "Which net can form a square pyramid?", options: ["1 square and 4 triangles", "1 circle and 1 rectangle", "6 squares", "2 triangles and 3 rectangles"], answer: "1 square and 4 triangles" },
-  { question: "Find the median of: 4, 9, 11, 15, 18, 21, 22", options: ["15", "11", "18", "21"], answer: "15" },
-  { question: "What is the volume of a cuboid with dimensions 3 cm × 2 cm × 5 cm?", options: ["30 cm³", "10 cm³", "15 cm³", "60 cm³"], answer: "30 cm³" },
-  { question: "Which type of data is the number of pets each student has?", options: ["Quantitative", "Categorical", "Descriptive", "Binary"], answer: "Quantitative" },
-  { question: "Which plot type is best for showing how often a value appears?", options: ["Dot plot", "Pie chart", "Line graph", "Bar graph"], answer: "Dot plot" },
-  { question: "How many vertices does a triangular prism have?", options: ["6", "9", "12", "8"], answer: "6" },
-  { question: "What is the mode of: 5, 6, 6, 7, 8, 6, 9?", options: ["6", "5", "7", "8"], answer: "6" },
-  { question: "Find the area of a parallelogram with base 7 cm and height 3 cm.", options: ["21 cm²", "10 cm²", "14 cm²", "24 cm²"], answer: "21 cm²" },
-  { question: "Which is an outlier in the set: 10, 11, 10, 12, 47?", options: ["47", "10", "11", "12"], answer: "47" }
-];
-    let currentPage = 0;
-    const questionsPerPage = 10;
-    const userAnswers = {};
-    let showResults = false;
+    <script>
+        let currentPage = 1;
+        let answers = {};
+        let score = 0;
 
-    function renderPage() {
-      const quizForm = document.getElementById("quizForm");
-      quizForm.innerHTML = `<h2>Page ${currentPage + 1} of 2</h2>`;
-      const start = currentPage * questionsPerPage;
-      const end = start + questionsPerPage;
-
-      for (let i = start; i < end; i++) {
-        const q = questions[i];
-        const selectedValue = userAnswers[i] || null;
-        quizForm.innerHTML += `
-          <div class="question">
-            <h3>${i + 1}. ${q.question}</h3>
-            ${q.options.map(option => {
-              let className = "";
-              if (showResults) {
-                if (option === q.answer) {
-                  className = "correct";
-                } else if (option === selectedValue && selectedValue !== q.answer && option === selectedValue) {
-                  className = "incorrect";
-                }
-              }
-              return `<label class="${className}"><input type="radio" name="q${i}" value="${option}" ${selectedValue === option ? "checked" : ""} onchange="storeAnswer(${i}, '${option}')"> ${option}</label><br>`;
-            }).join('')}
-          </div>`;
-      }
-    }
-
-    function storeAnswer(index, value) {
-      userAnswers[index] = value;
-    }
-
-    function nextPage() {
-      if (currentPage < 1) {
-        currentPage++;
-        renderPage();
-      }
-    }
-
-    function prevPage() {
-      if (currentPage > 0) {
-        currentPage--;
-        renderPage();
-      }
-    }
-
-    function submitQuiz() {
-      let score = 0;
-      for (let i = 0; i < questions.length; i++) {
-        if (userAnswers[i] === questions[i].answer) {
-          score++;
+        function updateProgress() {
+            const totalQuestions = 20;
+            const answeredQuestions = Object.keys(answers).length;
+            const progress = (answeredQuestions / totalQuestions) * 100;
+            
+            document.getElementById('progressFill').style.width = progress + '%';
+            document.getElementById('progressText').textContent = `Question ${answeredQuestions + 1} of ${totalQuestions}`;
         }
-      }
-      const result = document.getElementById("result");
-      result.textContent = `You scored ${score} out of ${questions.length}.`;
-      result.style.color = score >= 10 ? "green" : "red";
-      showResults = true;
-      renderPage();
-    }
 
-    renderPage();
-  </script>
+        function setupEventListeners() {
+            document.querySelectorAll('input[type="radio"]').forEach(radio => {
+                radio.addEventListener('change', function() {
+                    const questionNum = this.name.substring(1);
+                    const selectedValue = this.value;
+                    const questionElement = this.closest('.question');
+                    const correctAnswer = questionElement.dataset.correct;
+                    const feedback = questionElement.querySelector('.feedback');
+                    const options = questionElement.querySelectorAll('.option');
+                    
+                    answers[questionNum] = selectedValue;
+                    
+                    // Reset all options
+                    options.forEach(opt => {
+                        opt.classList.remove('correct', 'incorrect');
+                    });
+                    
+                    // Show feedback
+                    if (selectedValue === correctAnswer) {
+                        this.closest('.option').classList.add('correct');
+                        feedback.textContent = '✅ Correct! Great job!';
+                        feedback.className = 'feedback correct';
+                        feedback.style.display = 'block';
+                        score++;
+                    } else {
+                        this.closest('.option').classList.add('incorrect');
+                        // Show correct answer
+                        options.forEach(opt => {
+                            const input = opt.querySelector('input');
+                            if (input.value === correctAnswer) {
+                                opt.classList.add('correct');
+                            }
+                        });
+                        feedback.textContent = '❌ Incorrect. The correct answer is highlighted in green.';
+                        feedback.className = 'feedback incorrect';
+                        feedback.style.display = 'block';
+                    }
+                    
+                    updateProgress();
+                });
+            });
+        }
+
+        function nextPage() {
+            if (currentPage === 1) {
+                document.getElementById('page1').classList.remove('active');
+                document.getElementById('page2').classList.add('active');
+                document.getElementById('prevBtn').style.display = 'block';
+                document.getElementById('nextBtn').style.display = 'none';
+                document.getElementById('finishBtn').style.display = 'block';
+                currentPage = 2;
+            }
+        }
+
+        function previousPage() {
+            if (currentPage === 2) {
+                document.getElementById('page2').classList.remove('active');
+                document.getElementById('page1').classList.add('active');
+                document.getElementById('prevBtn').style.display = 'none';
+                document.getElementById('nextBtn').style.display = 'block';
+                document.getElementById('finishBtn').style.display = 'none';
+                currentPage = 1;
+            }
+        }
+
+        function finishQuiz() {
+            const totalQuestions = 20;
+            const correctAnswers = Object.keys(answers).length;
+            const percentage = Math.round((score / totalQuestions) * 100);
+            
+            document.getElementById('page2').style.display = 'none';
+            document.querySelector('.navigation').style.display = 'none';
+            document.querySelector('.progress-container').style.display = 'none';
+            
+            const scoreDisplay = document.getElementById('scoreDisplay');
+            scoreDisplay.innerHTML = `
+                <h3>📊 Your Final Score</h3>
+                <p style="font-size: 2rem; margin: 15px 0;">
+                    <strong>${score} out of ${totalQuestions}</strong>
+                </p>
+                <p style="font-size: 1.5rem; color: ${percentage >= 70 ? '#28a745' : percentage >= 50 ? '#ffc107' : '#dc3545'};">
+                    ${percentage}% ${percentage >= 90 ? '🌟 Outstanding!' : percentage >= 70 ? '👍 Good Job!' : percentage >= 50 ? '📚 Keep Practicing!' : '💪 You Can Do Better!'}
+                </p>
+            `;
+            
+            document.getElementById('finalMessage').classList.add('show');
+        }
+
+        // Initialize the quiz
+        document.addEventListener('DOMContentLoaded', function() {
+            setupEventListeners();
+            updateProgress();
+        });
+    </script>
 </body>
 </html>
