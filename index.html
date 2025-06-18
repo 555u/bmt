@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Term 3 Math Quiz</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #eef3f7;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 800px;
+      margin: 40px auto;
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    h1, h2 {
+      text-align: center;
+    }
+    .question {
+      margin-bottom: 20px;
+    }
+    .navigation {
+      text-align: center;
+      margin-top: 20px;
+    }
+    button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      background-color: #007bff;
+      color: white;
+      cursor: pointer;
+      margin: 5px;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    .result {
+      font-weight: bold;
+      text-align: center;
+      font-size: 18px;
+      margin-top: 20px;
+    }
+    .correct {
+      background-color: #d4edda;
+      border-left: 5px solid #28a745;
+      padding: 5px;
+    }
+    .incorrect {
+      background-color: #f8d7da;
+      border-left: 5px solid #dc3545;
+      padding: 5px;
+    }
+    .correct::before {
+      content: "✔ ";
+      color: green;
+    }
+    .incorrect::before {
+      content: "✘ ";
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Term 3 Math Quiz</h1>
+    <form id="quizForm"></form>
+    <div class="navigation">
+      <button type="button" onclick="prevPage()">Previous</button>
+      <button type="button" onclick="nextPage()">Next</button>
+      <button type="button" onclick="submitQuiz()">Submit</button>
+    </div>
+    <div id="result" class="result"></div>
+  </div>
+
+  <script>
+    const questions = [
+  { question: "What is the mean of 12, 15, 11, 10, and 17?", options: ["13", "12", "14", "15"], answer: "13" },
+  { question: "What is the median of the set: 3, 8, 5, 9, 2?", options: ["5", "3", "8", "6"], answer: "5" },
+  { question: "Which of the following is a statistical question?", options: ["What is your favorite color?", "What time is it now?", "How tall is the Burj Khalifa?", "How many books did students read last month?"], answer: "How many books did students read last month?" },
+  { question: "What is the volume of a cube with side length 4 cm?", options: ["64 cm³", "16 cm³", "24 cm³", "8 cm³"], answer: "64 cm³" },
+  { question: "Which shape has a net that includes 2 circles and a rectangle?", options: ["Cylinder", "Cone", "Cube", "Pyramid"], answer: "Cylinder" },
+  { question: "Find the area of a triangle with base 10 cm and height 6 cm.", options: ["30 cm²", "60 cm²", "15 cm²", "20 cm²"], answer: "30 cm²" },
+  { question: "Which of these is categorical data?", options: ["Eye color", "Height in cm", "Weight in kg", "Age"], answer: "Eye color" },
+  { question: "What is the mode of the numbers: 2, 3, 2, 5, 2, 6?", options: ["2", "3", "5", "6"], answer: "2" },
+  { question: "What is the surface area of a cube with 3 cm sides?", options: ["54 cm²", "27 cm²", "36 cm²", "18 cm²"], answer: "54 cm²" },
+  { question: "How many faces does a rectangular prism have?", options: ["6", "8", "10", "4"], answer: "6" },
+  { question: "What is the mean of: 100, 110, 120?", options: ["110", "100", "115", "120"], answer: "110" },
+  { question: "Which net can form a square pyramid?", options: ["1 square and 4 triangles", "1 circle and 1 rectangle", "6 squares", "2 triangles and 3 rectangles"], answer: "1 square and 4 triangles" },
+  { question: "Find the median of: 4, 9, 11, 15, 18, 21, 22", options: ["15", "11", "18", "21"], answer: "15" },
+  { question: "What is the volume of a cuboid with dimensions 3 cm × 2 cm × 5 cm?", options: ["30 cm³", "10 cm³", "15 cm³", "60 cm³"], answer: "30 cm³" },
+  { question: "Which type of data is the number of pets each student has?", options: ["Quantitative", "Categorical", "Descriptive", "Binary"], answer: "Quantitative" },
+  { question: "Which plot type is best for showing how often a value appears?", options: ["Dot plot", "Pie chart", "Line graph", "Bar graph"], answer: "Dot plot" },
+  { question: "How many vertices does a triangular prism have?", options: ["6", "9", "12", "8"], answer: "6" },
+  { question: "What is the mode of: 5, 6, 6, 7, 8, 6, 9?", options: ["6", "5", "7", "8"], answer: "6" },
+  { question: "Find the area of a parallelogram with base 7 cm and height 3 cm.", options: ["21 cm²", "10 cm²", "14 cm²", "24 cm²"], answer: "21 cm²" },
+  { question: "Which is an outlier in the set: 10, 11, 10, 12, 47?", options: ["47", "10", "11", "12"], answer: "47" }
+];
+    let currentPage = 0;
+    const questionsPerPage = 10;
+    const userAnswers = {};
+    let showResults = false;
+
+    function renderPage() {
+      const quizForm = document.getElementById("quizForm");
+      quizForm.innerHTML = `<h2>Page ${currentPage + 1} of 2</h2>`;
+      const start = currentPage * questionsPerPage;
+      const end = start + questionsPerPage;
+
+      for (let i = start; i < end; i++) {
+        const q = questions[i];
+        const selectedValue = userAnswers[i] || null;
+        quizForm.innerHTML += `
+          <div class="question">
+            <h3>${i + 1}. ${q.question}</h3>
+            ${q.options.map(option => {
+              let className = "";
+              if (showResults) {
+                if (option === q.answer) {
+                  className = "correct";
+                } else if (option === selectedValue && selectedValue !== q.answer && option === selectedValue) {
+                  className = "incorrect";
+                }
+              }
+              return `<label class="${className}"><input type="radio" name="q${i}" value="${option}" ${selectedValue === option ? "checked" : ""} onchange="storeAnswer(${i}, '${option}')"> ${option}</label><br>`;
+            }).join('')}
+          </div>`;
+      }
+    }
+
+    function storeAnswer(index, value) {
+      userAnswers[index] = value;
+    }
+
+    function nextPage() {
+      if (currentPage < 1) {
+        currentPage++;
+        renderPage();
+      }
+    }
+
+    function prevPage() {
+      if (currentPage > 0) {
+        currentPage--;
+        renderPage();
+      }
+    }
+
+    function submitQuiz() {
+      let score = 0;
+      for (let i = 0; i < questions.length; i++) {
+        if (userAnswers[i] === questions[i].answer) {
+          score++;
+        }
+      }
+      const result = document.getElementById("result");
+      result.textContent = `You scored ${score} out of ${questions.length}.`;
+      result.style.color = score >= 10 ? "green" : "red";
+      showResults = true;
+      renderPage();
+    }
+
+    renderPage();
+  </script>
+</body>
+</html>
